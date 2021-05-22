@@ -81,7 +81,7 @@ namespace NGK3Assignment.Controllers
             _context.WeatherStations.Add(weatherStation);
             try
             {
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync() ;
             }
             catch (DbUpdateException)
             {
