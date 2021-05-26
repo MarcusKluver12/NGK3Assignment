@@ -92,6 +92,7 @@ namespace NGK3Assignment
             {
                 endpoints.MapControllers();
             });
+            //test af push
         }
     }
 }
