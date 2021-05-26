@@ -10,10 +10,12 @@ namespace NGK3Assignment.Models
     {
         [Key]
         public string PlaceId { get; set; }
+        public string Place { get; set; }
         public DateTime Date { get; set; }
         public decimal Celcius { get; set; }
         public double Humidity { get; set; }
         public double Airpressure { get; set; }
+        
 
         /*
          * place: string name

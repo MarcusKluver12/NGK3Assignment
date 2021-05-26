@@ -25,7 +25,8 @@ namespace NGK3Assignment.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherStation>>> GetWeatherStations()
         {
-            return await _context.WeatherStations.ToListAsync();
+            return await _context.WeatherStations.ToListAsync().ConfigureAwait(false); 
+            // tilføjet .ConfigueAwait(false) så den vil kunne klare der kom RIGTIG mange clients til serveren. (ikke nødvendigt nu med så få brugere)
         }
 
         // GET: api/WeatherStations/5
