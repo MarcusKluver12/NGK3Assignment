@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NGK3Assignment.Models
+namespace NGK3Assignment.Utilities
 {
     public class AppSettings
     {

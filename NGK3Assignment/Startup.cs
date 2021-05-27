@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NGK3Assignment.Data;
 using NGK3Assignment.Models;
+using NGK3Assignment.Utilities;
 
 namespace NGK3Assignment
 {
@@ -33,6 +34,10 @@ namespace NGK3Assignment
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //// configure strongly typed settings objects
+            //var appSettingsSection = Configuration.GetSection("AppSettings");
+            //services.Configure<AppSettings>(appSettingsSection);
+
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -43,31 +48,26 @@ namespace NGK3Assignment
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "NGK3Assignment", Version = "v1" });
             //});
 
-            // configure strongly typed settings objects
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
-
-            // configure jwt authentication
-            var appSettings = appSettingsSection.Get<AppSettings>();
-            var key = Encoding.ASCII.GetBytes(appSettings.SecretKey);
-            services.AddAuthentication(x =>
-                {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(x =>
-                {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
-
+            //// configure jwt authentication
+            //var appSettings = appSettingsSection.Get<AppSettings>();
+            //var key = Encoding.ASCII.GetBytes(appSettings.SecretKey);
+            //services.AddAuthentication(x =>
+            //    {
+            //        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    })
+            //    .AddJwtBearer(x =>
+            //    {
+            //        x.RequireHttpsMetadata = false;
+            //        x.SaveToken = true;
+            //        x.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuerSigningKey = true,
+            //            IssuerSigningKey = new SymmetricSecurityKey(key),
+            //            ValidateIssuer = false,
+            //            ValidateAudience = false
+            //        };
+            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,7 +84,7 @@ namespace NGK3Assignment
 
             app.UseRouting();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
 
             app.UseAuthorization();
 
