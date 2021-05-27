@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using NGK3Assignment.Data;
+using NGK3Assignment.Hubs;
 using NGK3Assignment.Models;
 
 namespace NGK3Assignment.Controllers
@@ -15,10 +17,12 @@ namespace NGK3Assignment.Controllers
     public class WeatherStationsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IHubContext<SubcriberHub> _subscriberHubContext;
 
-        public WeatherStationsController(AppDbContext context)
+        public WeatherStationsController(AppDbContext context, IHubContext<SubcriberHub> subscriberHub)
         {
             _context = context;
+            _subscriberHubContext = subscriberHub;
         }
 
         // GET: api/WeatherStations
@@ -95,6 +99,8 @@ namespace NGK3Assignment.Controllers
                     throw;
                 }
             }
+
+            await _subscriberHubContext.Clients.All.SendAsync("weatherUpdate", weatherStation);
 
             return CreatedAtAction("GetWeatherStation", new { id = weatherStation.PlaceId }, weatherStation);
         }
