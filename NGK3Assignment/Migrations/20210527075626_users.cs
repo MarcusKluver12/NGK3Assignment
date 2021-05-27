@@ -2,12 +2,18 @@
 
 namespace NGK3Assignment.Migrations
 {
-    public partial class useradded : Migration
+    public partial class users : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "Place",
+                table: "WeatherStations",
+                type: "nvarchar(max)",
+                nullable: true);
+
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     UserId = table.Column<long>(type: "bigint", nullable: false)
@@ -15,18 +21,22 @@ namespace NGK3Assignment.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(254)", maxLength: 254, nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true)
+                    PwHash = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "Place",
+                table: "WeatherStations");
         }
     }
 }

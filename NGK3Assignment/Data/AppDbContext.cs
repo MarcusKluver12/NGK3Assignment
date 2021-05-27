@@ -11,6 +11,6 @@ namespace NGK3Assignment.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<WeatherStation> WeatherStations { get; set; }
-        public DbSet<User> User { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

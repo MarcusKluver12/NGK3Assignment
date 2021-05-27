@@ -33,10 +33,11 @@ namespace NGK3Assignment.Controllers
         }
 
         [HttpPost("register"), AllowAnonymous]
-        public async Task<ActionResult<TokenDto>> Register(UserDto regUser)
+        public async Task<ActionResult<UserDto>> Register(UserDto regUser)
         {
             regUser.Email = regUser.Email.ToLower();
-            var emailExist = await _context.User.Where(u => u.Email == regUser.Email).FirstOrDefaultAsync();
+            var emailExist = await _context.Users.Where(u =>
+                u.Email == regUser.Email).FirstOrDefaultAsync();
             if (emailExist != null)
                 return BadRequest(new { errorMessage = "Email already in use" });
             User user = new User()
@@ -45,40 +46,17 @@ namespace NGK3Assignment.Controllers
                 FirstName = regUser.FirstName,
                 LastName = regUser.LastName
             };
-            user.Password = HashPassword(regUser.Password, BcryptWorkfactor);
-            _context.User.Add(user);
+            user.PwHash = HashPassword(regUser.Password, BcryptWorkfactor);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            var token = new TokenDto();
-            token.JWT = GenerateToken(user);
-            return CreatedAtAction("Get", new { id = user.UserId }, token);
+            return CreatedAtAction("Get", new { id = user.UserId }, regUser);
         }
-
-        [HttpPost("login"), AllowAnonymous]
-        public async Task<ActionResult<TokenDto>> Login(UserDto login)
-        {
-            login.Email = login.Email.ToLower();
-            var user = await _context.User.Where(u => u.Email == login.Email).FirstOrDefaultAsync();
-            if (user != null)
-            {
-                var validPwd = Verify(login.Password, user.Password);
-                if (validPwd)
-                {
-                    var token = new TokenDto();
-                    token.JWT = GenerateToken(user);
-                    return token;
-                }
-            }
-            ModelState.AddModelError(string.Empty, "Forkert brugernavn eller password");
-            return BadRequest(ModelState);
-        }
-
 
         // GET: api/Account/5
         [HttpGet("{id}", Name = "Get")]
         public async Task<ActionResult<UserDto>> Get(int id)
         {
-            var user = await _context.User.FindAsync(id);
-
+            var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -88,6 +66,24 @@ namespace NGK3Assignment.Controllers
             userDto.FirstName = user.FirstName;
             userDto.LastName = user.LastName;
             return userDto;
+        }
+
+        [HttpPost("login"), AllowAnonymous]
+        public async Task<ActionResult<UserDto>> Login(UserDto login)
+        {
+            login.Email = login.Email.ToLower();
+            var user = await _context.Users.Where(u =>
+                u.Email == login.Email).FirstOrDefaultAsync();
+            if (user != null)
+            {
+                var validPwd = Verify(login.Password, user.PwHash);
+                if (validPwd)
+                {
+                    return login;
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Forkert brugernavn eller password");
+            return BadRequest(ModelState);
         }
 
         private string GenerateToken(User user)

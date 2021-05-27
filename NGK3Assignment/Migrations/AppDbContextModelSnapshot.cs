@@ -38,13 +38,13 @@ namespace NGK3Assignment.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PwHash")
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
                     b.HasKey("UserId");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("NGK3Assignment.Models.WeatherStation", b =>

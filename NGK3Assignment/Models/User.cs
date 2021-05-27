@@ -8,7 +8,7 @@ namespace NGK3Assignment.Models
 {
     public class User
     {
-        [Key] 
+        [Key]
         public long UserId { get; set; }
         [MaxLength(64)]
         public string FirstName { get; set; }
@@ -17,6 +17,8 @@ namespace NGK3Assignment.Models
         [MaxLength(254)]
         public string Email { get; set; }
         [MaxLength(60)]
-        public string Password { get; set; }
+        public string PwHash { get; set; }
+        // You may need a Role property, or a collection of claims
     }
+
 }
