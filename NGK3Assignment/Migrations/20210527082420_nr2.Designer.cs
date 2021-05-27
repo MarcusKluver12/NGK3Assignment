@@ -10,8 +10,8 @@ using NGK3Assignment.Data;
 namespace NGK3Assignment.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210527075626_users")]
-    partial class users
+    [Migration("20210527082420_nr2")]
+    partial class nr2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
