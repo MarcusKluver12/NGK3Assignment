@@ -69,17 +69,19 @@ namespace NGK3Assignment.Controllers
         }
 
         [HttpPost("login"), AllowAnonymous]
-        public async Task<ActionResult<UserDto>> Login(UserDto login)
+        public async Task<ActionResult<TokenDto>> Login(UserDto login)
         {
             login.Email = login.Email.ToLower();
-            var user = await _context.Users.Where(u =>
-                u.Email == login.Email).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(u => u.Email == login.Email)
+                .FirstOrDefaultAsync();
             if (user != null)
             {
                 var validPwd = Verify(login.Password, user.PwHash);
                 if (validPwd)
                 {
-                    return login;
+                    var token = new TokenDto();
+                    token.JWT = GenerateToken(user);
+                    return token;
                 }
             }
             ModelState.AddModelError(string.Empty, "Forkert brugernavn eller password");
@@ -88,26 +90,19 @@ namespace NGK3Assignment.Controllers
 
         private string GenerateToken(User user)
         {
-            //Claim roleClaim;
-            //if (isSomething)
-            //    roleClaim = new Claim("Role", "Admin");
-            //else
-            //    roleClaim = new Claim("Role", "Worker");
-
             var claims = new Claim[]
             {
                 new Claim("Email", user.Email),
-                new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),     
-                // roleClaim,
+                new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
                 new Claim("UserId", user.UserId.ToString()),
-                new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds().ToString()),
+                new Claim(JwtRegisteredClaimNames.Exp,
+                    new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds().ToString()),
             };
-
             var key = Encoding.ASCII.GetBytes(_appSettings.SecretKey);
             var token = new JwtSecurityToken(
-                 new JwtHeader(new SigningCredentials(
-                      new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)),
-                      new JwtPayload(claims));
+                new JwtHeader(new SigningCredentials(
+                    new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)),
+                new JwtPayload(claims));
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
