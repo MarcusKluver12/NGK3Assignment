@@ -2,7 +2,7 @@
 
 namespace NGK3Assignment.Migrations
 {
-    public partial class users : Migration
+    public partial class nr2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
