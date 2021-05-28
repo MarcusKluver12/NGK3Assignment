@@ -49,16 +49,15 @@ namespace NGK3Assignment.Controllers
         }
 
         // GET: api/WeatherStations/latest
-        [HttpGet("{latest}")]
+        [HttpGet("latest")]
         public async Task<ActionResult<IEnumerable<WeatherStation>>> GetLatestWeatherStations()
         {
-            //IQueryable<WeatherStation> queryWeather = _context.WeatherStations;
+            IQueryable<WeatherStation> queryWeather = _context.WeatherStations;
+
 
             //var placeidInt = Int32.Parse()
 
-            var latest = _context.WeatherStations
-                .OrderByDescending(max => max.PlaceId)
-                .FirstOrDefault();
+            //var latest = _context.WeatherStations.OrderByDescending(max => max.PlaceId).FirstOrDefault();
 
             return await _context.WeatherStations.ToListAsync().ConfigureAwait(false);
             // tilføjet .ConfigueAwait(false) så den vil kunne klare der kom RIGTIG mange clients til serveren. (ikke nødvendigt nu med så få brugere)
