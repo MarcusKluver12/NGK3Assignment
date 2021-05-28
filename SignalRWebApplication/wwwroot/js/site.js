@@ -11,5 +11,6 @@ connection.start().then().catch();
 
 connection.on("newWeatherUpdate", function (weather) {
     console.log(weather);
+    alert("ny vejrmelding");
 });
 
