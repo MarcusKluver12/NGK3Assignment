@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -30,6 +31,22 @@ namespace NGK3Assignment.Controllers
         public async Task<ActionResult<IEnumerable<WeatherStation>>> GetWeatherStations()
         {
             return await _context.WeatherStations.ToListAsync().ConfigureAwait(false); 
+            // tilføjet .ConfigueAwait(false) så den vil kunne klare der kom RIGTIG mange clients til serveren. (ikke nødvendigt nu med så få brugere)
+        }
+
+        // GET: api/WeatherStations/latest
+        [HttpGet("{latest}")]
+        public async Task<ActionResult<IEnumerable<WeatherStation>>> GetLatestWeatherStations()
+        {
+            //IQueryable<WeatherStation> queryWeather = _context.WeatherStations;
+
+            //var placeidInt = Int32.Parse()
+
+            var latest = _context.WeatherStations
+                .OrderByDescending(max => max.PlaceId)
+                .FirstOrDefault();
+
+            return await _context.WeatherStations.ToListAsync().ConfigureAwait(false);
             // tilføjet .ConfigueAwait(false) så den vil kunne klare der kom RIGTIG mange clients til serveren. (ikke nødvendigt nu med så få brugere)
         }
 
@@ -80,6 +97,7 @@ namespace NGK3Assignment.Controllers
 
         // POST: api/WeatherStations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize] //tilføjet [authorize] til post fordi det er kun muligt for dem som er logget ind at poste vejrdata
         [HttpPost]
         public async Task<ActionResult<WeatherStation>> PostWeatherStation(WeatherStation weatherStation)
         {

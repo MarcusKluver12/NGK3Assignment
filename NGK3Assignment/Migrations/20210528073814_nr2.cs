@@ -12,6 +12,20 @@ namespace NGK3Assignment.Migrations
                 type: "nvarchar(max)",
                 nullable: true);
 
+            migrationBuilder.AddColumn<double>(
+                name: "lat",
+                table: "WeatherStations",
+                type: "float",
+                nullable: false,
+                defaultValue: 0.0);
+
+            migrationBuilder.AddColumn<double>(
+                name: "lon",
+                table: "WeatherStations",
+                type: "float",
+                nullable: false,
+                defaultValue: 0.0);
+
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
@@ -36,6 +50,14 @@ namespace NGK3Assignment.Migrations
 
             migrationBuilder.DropColumn(
                 name: "Place",
+                table: "WeatherStations");
+
+            migrationBuilder.DropColumn(
+                name: "lat",
+                table: "WeatherStations");
+
+            migrationBuilder.DropColumn(
+                name: "lon",
                 table: "WeatherStations");
         }
     }
