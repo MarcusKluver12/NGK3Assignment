@@ -5,7 +5,9 @@
 
 "use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44368/api/weatherstations/hubs/subscriberHub").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44368/SubcriberHub").build();
+
+connection.start().then().catch();
 
 connection.on("newWeatherUpdate", function (weather) {
     console.log(weather);

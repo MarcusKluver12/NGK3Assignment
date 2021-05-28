@@ -43,6 +43,7 @@ namespace NGK3Assignment
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
+            services.AddCors();
 
             //services.AddSwaggerGen(c =>
             //{
@@ -82,6 +83,15 @@ namespace NGK3Assignment
                 //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NGK3Assignment v1"));
             }
 
+            app.UseCors(x => x
+                //.AllowAnyOrigin() // Not allowed together with AllowCredential
+                //.WithOrigins("http://localhost:8080", "http://localhost:8081" "http://localhost:5000" )
+                .SetIsOriginAllowed(x => _ = true)
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+            );
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -93,10 +103,10 @@ namespace NGK3Assignment
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<SubcriberHub>("/subcriberHub");
+                endpoints.MapHub<SubcriberHub>("/SubcriberHub");
 
             });
-            //test af push
+            
         }
     }
 }
