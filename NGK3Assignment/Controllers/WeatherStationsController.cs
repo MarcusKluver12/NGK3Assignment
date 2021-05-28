@@ -119,7 +119,7 @@ namespace NGK3Assignment.Controllers
                 }
             }
 
-            await _subscriberHubContext.Clients.All.SendAsync("weatherUpdate", weatherStation);
+            await _hubContext.Clients.All.SendAsync("weatherUpdate", weatherStation);
 
             return CreatedAtAction("GetWeatherStation", new { id = weatherStation.PlaceId }, weatherStation);
         }

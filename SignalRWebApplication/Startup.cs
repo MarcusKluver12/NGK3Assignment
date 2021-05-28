@@ -25,16 +25,6 @@ namespace SignalRWebApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddSignalR();
-
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder.WithOrigins("https://localhost:44368/api/weatherstations")
-                        .AllowCredentials();
-                });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,8 +45,6 @@ namespace SignalRWebApplication
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseCors();
 
             app.UseAuthorization();
 
