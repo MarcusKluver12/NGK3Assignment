@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -49,16 +50,15 @@ namespace NGK3Assignment.Controllers
         }
 
         // GET: api/WeatherStations/latest
-        [HttpGet("{latest}")]
+        [HttpGet("latest")]
         public async Task<ActionResult<IEnumerable<WeatherStation>>> GetLatestWeatherStations()
         {
-            //IQueryable<WeatherStation> queryWeather = _context.WeatherStations;
+            IQueryable<WeatherStation> queryWeather = _context.WeatherStations;
+
 
             //var placeidInt = Int32.Parse()
 
-            var latest = _context.WeatherStations
-                .OrderByDescending(max => max.PlaceId)
-                .FirstOrDefault();
+            //var latest = _context.WeatherStations.OrderByDescending(max => max.PlaceId).FirstOrDefault();
 
             return await _context.WeatherStations.ToListAsync().ConfigureAwait(false);
             // tilføjet .ConfigueAwait(false) så den vil kunne klare der kom RIGTIG mange clients til serveren. (ikke nødvendigt nu med så få brugere)
@@ -98,6 +98,7 @@ namespace NGK3Assignment.Controllers
 
         // POST: api/WeatherStations
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<WeatherStation>> PostWeatherStation(WeatherStation weatherStation)
         {
