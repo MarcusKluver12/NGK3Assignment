@@ -175,38 +175,7 @@ namespace NGK3Assignment.Controllers
             _context.WeatherStations.Remove(weatherStation);
             await _context.SaveChangesAsync();
 
-            int first, second, third = 0;
-
-            foreach (var v in _context.WeatherStations)
-            {
-                if (v.PlaceId > first)
-                {
-                    third = second;
-                    second = first;
-                    first = v.PlaceId;
-                }
-                else if (v.PlaceId > second)
-                {
-                    third = second;
-                    second = v.PlaceId;
-                }
-                else if (v.PlaceId > third)
-                {
-                    third = v.PlaceId;
-                }
-
-            }
-
-            List<WeatherStation> weatherlist;
-            for (int i = 0; i < 2; i++)
-            {
-                
-            }
-
-
             return NoContent();
-
-            
 
         }
 
