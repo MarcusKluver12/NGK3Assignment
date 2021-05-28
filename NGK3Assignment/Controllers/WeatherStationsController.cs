@@ -27,8 +27,8 @@ namespace NGK3Assignment.Controllers
             _hubContext = subscriberHub;
         }
 
-        // constructor til test
-        //public override WeatherStationsController(AppDbContext context)
+        //// constructor til test - Kun kommenter ind når der skal køres test, ellers skal den være udkommenteret.
+        //public WeatherStationsController(AppDbContext context)
         //{
         //    _context = context;
         //}
