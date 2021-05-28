@@ -16,10 +16,5 @@ namespace NGK3Assignment.Hubs
             await Clients.All.SendAsync("newWeatherUpdate", weather);
         }
 
-        public override Task OnConnectedAsync()
-        {
-            return base.OnConnectedAsync();
-        }
-
     }
 }
