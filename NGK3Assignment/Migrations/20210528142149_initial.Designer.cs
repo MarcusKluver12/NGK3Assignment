@@ -10,8 +10,8 @@ using NGK3Assignment.Data;
 namespace NGK3Assignment.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210527082420_nr2")]
-    partial class nr2
+    [Migration("20210528142149_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,8 +51,10 @@ namespace NGK3Assignment.Migrations
 
             modelBuilder.Entity("NGK3Assignment.Models.WeatherStation", b =>
                 {
-                    b.Property<string>("PlaceId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PlaceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("Airpressure")
                         .HasColumnType("float");
@@ -68,6 +70,12 @@ namespace NGK3Assignment.Migrations
 
                     b.Property<string>("Place")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("lat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("lon")
+                        .HasColumnType("float");
 
                     b.HasKey("PlaceId");
 
