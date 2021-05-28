@@ -27,6 +27,12 @@ namespace NGK3Assignment.Controllers
             _hubContext = subscriberHub;
         }
 
+        // constructor til test
+        //public override WeatherStationsController(AppDbContext context)
+        //{
+        //    _context = context;
+        //}
+
         // GET: api/WeatherStations
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherStation>>> GetWeatherStations()
