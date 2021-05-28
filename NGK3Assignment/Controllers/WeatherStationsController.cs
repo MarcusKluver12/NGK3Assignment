@@ -19,8 +19,7 @@ namespace NGK3Assignment.Controllers
     public class WeatherStationsController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly IHubContext<SubcriberHub> _hubContext; 
-        //private readonly  _counter;
+        private readonly IHubContext<SubcriberHub> _hubContext;
 
         public WeatherStationsController(AppDbContext context, IHubContext<SubcriberHub> subscriberHub)
         {
