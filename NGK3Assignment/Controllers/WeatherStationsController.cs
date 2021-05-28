@@ -47,6 +47,23 @@ namespace NGK3Assignment.Controllers
             return weatherStation;
         }
 
+        // GET: api/WeatherStations/latest
+        [HttpGet("{latest}")]
+        public async Task<ActionResult<IEnumerable<WeatherStation>>> GetLatestWeatherStations()
+        {
+            //IQueryable<WeatherStation> queryWeather = _context.WeatherStations;
+
+            //var placeidInt = Int32.Parse()
+
+            var latest = _context.WeatherStations
+                .OrderByDescending(max => max.PlaceId)
+                .FirstOrDefault();
+
+            return await _context.WeatherStations.ToListAsync().ConfigureAwait(false);
+            // tilføjet .ConfigueAwait(false) så den vil kunne klare der kom RIGTIG mange clients til serveren. (ikke nødvendigt nu med så få brugere)
+        }
+
+
         // PUT: api/WeatherStations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
