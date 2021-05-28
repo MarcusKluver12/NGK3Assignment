@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using NGK3Assignment.Data;
 using NGK3Assignment.Hubs;
 using NGK3Assignment.Models;
+using Xunit.Sdk;
 
 namespace NGK3Assignment.Controllers
 {
@@ -30,13 +31,12 @@ namespace NGK3Assignment.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WeatherStation>>> GetWeatherStations()
         {
-            return await _context.WeatherStations.ToListAsync().ConfigureAwait(false); 
-            // tilføjet .ConfigueAwait(false) så den vil kunne klare der kom RIGTIG mange clients til serveren. (ikke nødvendigt nu med så få brugere)
+            return await _context.WeatherStations.ToListAsync();
         }
 
         // GET: api/WeatherStations/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<WeatherStation>> GetWeatherStation(string id)
+        public async Task<ActionResult<WeatherStation>> GetWeatherStation(int id)
         {
             var weatherStation = await _context.WeatherStations.FindAsync(id);
 
@@ -48,26 +48,42 @@ namespace NGK3Assignment.Controllers
             return weatherStation;
         }
 
-        // GET: api/WeatherStations/latest
-        [HttpGet("latest")]
-        public async Task<ActionResult<IEnumerable<WeatherStation>>> GetLatestWeatherStations()
+        //// GET: api/WeatherStations/latest
+        //[HttpGet("latest")]
+        //public async Task<ActionResult<IEnumerable<WeatherStation>>> GetLatestWeatherStations()
+        //{
+        //    //IQueryable<WeatherStation> queryWeather = _context.WeatherStations;
+
+        //    var latest = await _context.WeatherStations.Where(l => l.PlaceId == );
+
+
+        //    foreach (var VARIABLE in _context.WeatherStations)
+        //    {
+
+        //    }
+
+
+        //    //var placeidInt = Int32.Parse()
+
+        //    //var latest = _context.WeatherStations.OrderByDescending(max => max.PlaceId).FirstOrDefault();
+
+        //    return latest;
+        //}
+
+        // GET: api/WeatherStations/today/{date}
+        [HttpGet("today/{date}")]
+        public async Task<List<WeatherStation>> GetTodaysWeatherStations(string date)
         {
-            IQueryable<WeatherStation> queryWeather = _context.WeatherStations;
+            var today = await _context.WeatherStations.Where(d => d.Date == DateTime.Parse(date)).ToListAsync();
 
-
-            //var placeidInt = Int32.Parse()
-
-            //var latest = _context.WeatherStations.OrderByDescending(max => max.PlaceId).FirstOrDefault();
-
-            return await _context.WeatherStations.ToListAsync().ConfigureAwait(false);
-            // tilføjet .ConfigueAwait(false) så den vil kunne klare der kom RIGTIG mange clients til serveren. (ikke nødvendigt nu med så få brugere)
+            return today;
         }
 
 
         // PUT: api/WeatherStations/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutWeatherStation(string id, WeatherStation weatherStation)
+        public async Task<IActionResult> PutWeatherStation(int id, WeatherStation weatherStation)
         {
             if (id != weatherStation.PlaceId)
             {
@@ -125,7 +141,7 @@ namespace NGK3Assignment.Controllers
 
         // DELETE: api/WeatherStations/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteWeatherStation(string id)
+        public async Task<IActionResult> DeleteWeatherStation(int id)
         {
             var weatherStation = await _context.WeatherStations.FindAsync(id);
             if (weatherStation == null)
@@ -139,7 +155,7 @@ namespace NGK3Assignment.Controllers
             return NoContent();
         }
 
-        private bool WeatherStationExists(string id)
+        private bool WeatherStationExists(int id)
         {
             return _context.WeatherStations.Any(e => e.PlaceId == id);
         }

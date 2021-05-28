@@ -9,8 +9,10 @@ namespace NGK3Assignment.Models
     public class WeatherStation
     {
         [Key]
-        public string PlaceId { get; set; }
+        public int PlaceId { get; set; }
         public string Place { get; set; }
+        public double lat { get; set; }
+        public double lon { get; set; }
         public DateTime Date { get; set; }
         public decimal Celcius { get; set; }
         public double Humidity { get; set; }

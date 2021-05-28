@@ -49,8 +49,10 @@ namespace NGK3Assignment.Migrations
 
             modelBuilder.Entity("NGK3Assignment.Models.WeatherStation", b =>
                 {
-                    b.Property<string>("PlaceId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PlaceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<double>("Airpressure")
                         .HasColumnType("float");
@@ -66,6 +68,12 @@ namespace NGK3Assignment.Migrations
 
                     b.Property<string>("Place")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("lat")
+                        .HasColumnType("float");
+
+                    b.Property<double>("lon")
+                        .HasColumnType("float");
 
                     b.HasKey("PlaceId");
 
