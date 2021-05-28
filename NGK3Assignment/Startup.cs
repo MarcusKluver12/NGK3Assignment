@@ -94,6 +94,7 @@ namespace NGK3Assignment
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<SubcriberHub>("/subcriberHub");
+
             });
             //test af push
         }

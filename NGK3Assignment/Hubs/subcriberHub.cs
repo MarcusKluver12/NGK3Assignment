@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using NGK3Assignment.Hubs;
 using NGK3Assignment.Models;
 
 namespace NGK3Assignment.Hubs
