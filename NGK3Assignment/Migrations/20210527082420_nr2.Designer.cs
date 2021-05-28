@@ -10,7 +10,7 @@ using NGK3Assignment.Data;
 namespace NGK3Assignment.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210528073814_nr2")]
+    [Migration("20210527082420_nr2")]
     partial class nr2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,12 +68,6 @@ namespace NGK3Assignment.Migrations
 
                     b.Property<string>("Place")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("lat")
-                        .HasColumnType("float");
-
-                    b.Property<double>("lon")
-                        .HasColumnType("float");
 
                     b.HasKey("PlaceId");
 

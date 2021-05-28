@@ -67,12 +67,6 @@ namespace NGK3Assignment.Migrations
                     b.Property<string>("Place")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("lat")
-                        .HasColumnType("float");
-
-                    b.Property<double>("lon")
-                        .HasColumnType("float");
-
                     b.HasKey("PlaceId");
 
                     b.ToTable("WeatherStations");
