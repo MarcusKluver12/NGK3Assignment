@@ -49,27 +49,41 @@ namespace NGK3Assignment.Controllers
             return weatherStation;
         }
 
-        //// GET: api/WeatherStations/latest
-        //[HttpGet("latest")]
-        //public async Task<ActionResult<IEnumerable<WeatherStation>>> GetLatestWeatherStations()
-        //{
-        //    //IQueryable<WeatherStation> queryWeather = _context.WeatherStations;
+        // GET: api/WeatherStations/latest
+        [HttpGet("latest")]
+        public async Task<ActionResult<IEnumerable<WeatherStation>>> GetLatestWeatherStations()
+        {
+            int first = 0;
+            int second = 0;
+            int third = 0;
 
-        //    var latest = await _context.WeatherStations.Where(l => l.PlaceId == );
+            List<WeatherStation> list = new List<WeatherStation>();
 
+            foreach (var v in _context.WeatherStations)
+            {
+                if (v.PlaceId > first)
+                {
+                    third = second;
+                    second = first;
+                    first = v.PlaceId;
+                }
+                else if (v.PlaceId > second)
+                {
+                    third = second;
+                    second = v.PlaceId;
+                }
+                else if (v.PlaceId > third)
+                {
+                    third = v.PlaceId;
+                }
+            }
 
-        //    foreach (var VARIABLE in _context.WeatherStations)
-        //    {
+            list.Add(await _context.WeatherStations.FindAsync(first));
+            list.Add(await _context.WeatherStations.FindAsync(second));
+            list.Add(await _context.WeatherStations.FindAsync(third));
 
-        //    }
-
-
-        //    //var placeidInt = Int32.Parse()
-
-        //    //var latest = _context.WeatherStations.OrderByDescending(max => max.PlaceId).FirstOrDefault();
-
-        //    return latest;
-        //}
+            return list;
+        }
 
         // GET: api/WeatherStations/today/{date}
         [HttpGet("today/{date}")]
@@ -78,6 +92,15 @@ namespace NGK3Assignment.Controllers
             var today = await _context.WeatherStations.Where(d => d.Date == DateTime.Parse(date)).ToListAsync();
 
             return today;
+        }
+
+        // GET: api/WeatherStations/today/{date}
+        [HttpGet("timeinterval/{start}, {end}")]
+        public async Task<List<WeatherStation>> GetTimeIntervalWeatherStations(DateTime start, DateTime end)
+        {
+            var timeinterval = await _context.WeatherStations.Where(d => d.Date >= start && d.Date <= end).ToListAsync();
+
+            return timeinterval;
         }
 
 
