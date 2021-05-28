@@ -7,9 +7,17 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44368/SubcriberHub").build();
 
-connection.start().then().catch();
-
-connection.on("newWeatherUpdate", function (weather) {
-    console.log(weather);
+connection.start().then(function() {
+    console.log("Connect");
+}).catch(function(err) {
+    console.log("error "+ err);
 });
+
+connection.on("WeatherUpdate",
+    function(weather) {
+        console.log("ny vejr melding");
+        var vejrString = JSON.stringify(weather);
+        console.log(vejrString);
+        //alert("ny vejrmelding");
+    });
 

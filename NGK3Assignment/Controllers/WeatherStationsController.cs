@@ -19,12 +19,13 @@ namespace NGK3Assignment.Controllers
     public class WeatherStationsController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly IHubContext<SubcriberHub> _subscriberHubContext;
+        private readonly IHubContext<SubcriberHub> _hubContext; 
+        //private readonly  _counter;
 
         public WeatherStationsController(AppDbContext context, IHubContext<SubcriberHub> subscriberHub)
         {
             _context = context;
-            _subscriberHubContext = subscriberHub;
+            _hubContext = subscriberHub;
         }
 
         // GET: api/WeatherStations
@@ -134,7 +135,7 @@ namespace NGK3Assignment.Controllers
                 }
             }
 
-            await _subscriberHubContext.Clients.All.SendAsync("weatherUpdate", weatherStation);
+            await _hubContext.Clients.All.SendAsync("weatherUpdate", weatherStation);
 
             return CreatedAtAction("GetWeatherStation", new { id = weatherStation.PlaceId }, weatherStation);
         }
